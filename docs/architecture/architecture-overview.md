@@ -1,13 +1,13 @@
 # Architecture Overview
 
 **Product:** Local Agent Workspace  
-**Status:** Proposed — for review  
+**Status:** Accepted — initial architecture baseline  
 **Related specifications:** [Product Requirements](../requirements/product-requirements.md) · [Software Requirements](../requirements/software-requirements.md)  
 **Scope:** Target architecture for the initial single-user, local-first product; not an implementation-status report
 
 ## 1. Purpose and architectural drivers
 
-Local Agent Workspace is a self-hosted assistant that enables a user to interact with authorized local documents, structured data, and extensible tools. This document records the *proposed* system structure, responsibilities, interfaces, data flows, and principal trust boundaries. It is informed by ISO/IEC/IEEE 42010's separation of stakeholders, concerns, and architecture views, without claiming formal conformance.
+Local Agent Workspace is a self-hosted assistant that enables a user to interact with authorized local documents, structured data, and extensible tools. This document records the accepted high-level system structure, responsibilities, interfaces, data flows, and principal trust boundaries. It is informed by ISO/IEC/IEEE 42010's separation of stakeholders, concerns, and architecture views, without claiming formal conformance.
 
 Key drivers:
 
@@ -54,7 +54,7 @@ This diagram identifies dependencies, not mandatory process or container boundar
 flowchart TB
     UI[React / TypeScript UI] <--> API[FastAPI interface]
     API --> APP[Application services: runs, approvals, sessions]
-    APP --> ORCH[Agent orchestration: LangGraph candidate]
+    APP --> ORCH[Agent orchestration: LangGraph (pending ADR-001)]
     ORCH --> MODEL[Model-provider boundary]
     ORCH --> GW[Tool gateway]
     GW --> POLICY[Policy and approval enforcement]
@@ -146,7 +146,7 @@ The architecture distinguishes:
 - **Retrieval data:** Derived text chunks, embeddings, metadata, and source references (FR-006).
 - **Telemetry/evaluation data:** Sanitized events and reproducible evaluation metadata (NFR-004, NFR-006, SEC-011).
 
-**Candidate persistence:** PostgreSQL with pgvector for structured records and retrieval; a durable checkpointer for resumable orchestration. Whether all state shares one PostgreSQL instance and which checkpoint backend to use remain design decisions. Do not store user documents in the repository. Indexes must be regenerable from authorized source material.
+**Proposed persistence:** PostgreSQL with pgvector for structured records and retrieval; a durable checkpointer for resumable orchestration. Whether all state shares one PostgreSQL instance and which checkpoint backend to use remain design decisions. Do not store user documents in the repository. Indexes must be regenerable from authorized source material.
 
 ## 6. Trust boundaries and security controls
 
