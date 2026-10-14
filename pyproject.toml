@@ -1,0 +1,12 @@
+[project]
+name = "local-agent-workspace"
+version = "0.1.0"
+description = "A local-first, self-hosted AI assistant"
+requires-python = ">=3.14,<3.15"
+dependencies = []
+
+[dependency-groups]
+docs = [
+    "mkdocs>=1.6,<2",
+    "mkdocs-material>=9.6,<10",
+]
