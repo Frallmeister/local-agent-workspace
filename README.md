@@ -66,18 +66,23 @@ Open **http://127.0.0.1:5173/**. The page checks backend health, displays `ok` w
 
 The browser calls the relative URL `/api/health`. Vite proxies `/api` to **http://127.0.0.1:8000** during development, so no backend CORS change is needed. Both servers bind to loopback. The typed API client in `frontend/src/api/health.ts` validates the JSON response at runtime: it must be an object with `status` equal to `"ok"`. Non-success HTTP responses, invalid JSON, invalid response shapes, network failures, and timeouts lead to the error state. The health endpoint reports application liveness only.
 
-Verify the frontend compilation and bundle:
+Run the frontend checks from `frontend/`:
 
 ```shell
+npm run typecheck
+npm run lint
 npm run build
 npm run test:api
+npm test
 ```
 
-The build performs TypeScript checking and writes the bundle to ignored `frontend/dist/`. The API tests use Node's built-in test runner with mocked fetch responses to check validation, HTTP/network failures, timeout, and cancellation without a backend. Production serving and proxy configuration are outside M1-02; the development proxy is not included in the bundle. Commit `frontend/package-lock.json` when dependencies change and use `npm ci` for reproducible installation.
+TypeScript runs in strict mode, including the component tests and Vite/Vitest configuration. ESLint checks JavaScript/TypeScript and the core React Hooks rules; warnings fail the check. The build also performs TypeScript checking and writes the bundle to ignored `frontend/dist/`.
 
-The **Frontend tests** GitHub Actions job runs these API tests on pull requests to `main`, pushes to `main`, and manual dispatch. After its first successful run, select **Frontend tests** as a required status check in the branch ruleset. The workflow has no path filters, so it reports a result for every pull request to `main`.
+The API tests use Node's built-in test runner with mocked fetch responses to check validation, HTTP/network failures, timeout, and cancellation. `npm test` runs Vitest and React Testing Library component tests once in jsdom. They exercise the real API client with mocked fetch responses to verify loading, success, failure, retry, and cancelled requests without FastAPI or external services. Production serving and proxy configuration are outside M1-02; the development proxy is not included in the bundle. Commit `frontend/package-lock.json` when dependencies change and use `npm ci` for reproducible installation.
 
-M1-02 ([issue #6](https://github.com/Frallmeister/local-agent-workspace/issues/6)) covers FR-001 (interface foundation), NFR-002, NFR-003, and SEC-008, under ADR-0002 and threats T-07/T-11. Frontend component tests, ESLint, and broader CI checks are planned in M1-03; complete M1 setup verification is planned in M1-04. No secrets or configuration template are needed for this health-only integration.
+The **Frontend tests** GitHub Actions job runs type checking, ESLint, the build, API tests, and component tests on pull requests to `main`, pushes to `main`, and manual dispatch. After its first successful run, select **Frontend tests** as a required status check in the branch ruleset. The workflow has no path filters, so it reports a result for every pull request to `main`.
+
+M1-02 ([issue #6](https://github.com/Frallmeister/local-agent-workspace/issues/6)) covers FR-001 (interface foundation), NFR-002, NFR-003, and SEC-008, under ADR-0002 and threats T-07/T-11. M1-03 ([issue #7](https://github.com/Frallmeister/local-agent-workspace/issues/7)) adds frontend quality checks for NFR-002, NFR-005, and initial NFR-009 groundwork; these tests do not replace a full cross-language API contract check. Complete M1 setup verification remains planned in M1-04. No secrets or configuration template are needed for this health-only integration.
 
 ### Work with the documentation
 
