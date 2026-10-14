@@ -54,7 +54,7 @@ This diagram identifies dependencies, not mandatory process or container boundar
 flowchart TB
     UI[React / TypeScript UI] <--> API[FastAPI interface]
     API --> APP[Application services: runs, approvals, sessions]
-    APP --> ORCH[Agent orchestration: LangGraph (pending ADR-001)]
+    APP --> ORCH[Agent orchestration: LangGraph (ADR-0001)]
     ORCH --> MODEL[Model-provider boundary]
     ORCH --> GW[Tool gateway]
     GW --> POLICY[Policy and approval enforcement]
@@ -174,20 +174,26 @@ A dedicated threat model will analyze attack paths, severity, mitigations, and r
 
 ## 8. Architecture decisions and unresolved questions
 
-The following are **proposals**, not accepted ADRs:
+The following architectural decisions are **accepted**. They describe intended design, not completed implementation.
 
-| Topic | Current direction | Decision artifact / next step |
-| --- | --- | --- |
-| Agent orchestration | LangGraph alone for stateful agent workflows; standard Pydantic for typed contracts | ADR-001: compare complexity, interrupts/checkpointing, alternatives |
-| Backend style | Modular monolith rather than independent agent microservices | ADR: module boundaries and deployment style |
-| Tool security | Central enforcement with operation-specific approval for mutations | Security ADR and threat model |
-| Storage | PostgreSQL; pgvector candidate for retrieval | ADR on persistence and retrieval |
-| MCP | Client and server support with explicit tool allowlists | Integration/security design |
-| First writable formats | Restrict scope, likely UTF-8 text first | Roadmap and file-operation design |
-| MVP release boundary | Single local agent and secure read-only workflow before expanded capabilities | Roadmap |
-| Approval persistence | Durable operation identity and crash-safe resumption | Approval/state design |
+| Decision | Accepted reference |
+| --- | --- |
+| LangGraph for agent orchestration, with standard Pydantic for typed contracts | [ADR-0001](adr/0001-use-langgraph-for-agent-orchestration.md) |
+| Modular monolith for the backend | [ADR-0002](adr/0002-adopt-a-modular-monolith.md) |
+| Centralized authorization and tool enforcement, including MCP tools | [ADR-0003](adr/0003-centralize-tool-authorization.md) |
+| Configurable model providers with explicit capability checks | [ADR-0004](adr/0004-adopt-configurable-model-providers.md) |
 
-**No implementation is asserted by this document.** Subsequent ADRs establish decisions; implementation and verification evidence must be tracked independently.
+The following **implementation/design questions remain open**:
+
+| Topic | Current direction / next step |
+| --- | --- |
+| Storage and retrieval | PostgreSQL is required for structured data; pgvector is a candidate for retrieval. Confirm persistence and indexing details when implementing M3. |
+| MCP transport and isolation | Define server trust configuration, transport and process restrictions before implementing M6. |
+| Writable formats | The accepted [roadmap](../project/development-roadmap.md) limits v1.0 writes to UTF-8 text, including Markdown and JSON as text; file-operation semantics require a detailed design. |
+| MVP release boundary | The accepted [roadmap](../project/development-roadmap.md) establishes a read-only single-agent MVP after M2. |
+| Approval state | Specify operation identity, durable storage, replay protection and crash-safe resumption before implementing M5. |
+
+**No implementation or verification is asserted by this document.** Accepted architectural decisions are not implementation evidence.
 
 ## 9. Verification implications
 
