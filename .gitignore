@@ -211,6 +211,7 @@ tempCodeRunnerFile.py
 # Frontend dependencies and generated output
 node_modules/
 frontend/dist/
+.vitest/
 
 # PyPI configuration file
 .pypirc
