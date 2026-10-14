@@ -1,0 +1,37 @@
+site_name: Local Agent Workspace
+site_description: Documentation for a self-hosted, local-first AI assistant
+repo_url: https://github.com/Frallmeister/local-agent-workspace
+repo_name: Frallmeister/local-agent-workspace
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Project:
+      - Product Requirements: requirements/product-requirements.md
+      - Software Requirements: requirements/software-requirements.md
+      - Development Roadmap: project/development-roadmap.md
+  - Architecture:
+      - Overview: architecture/architecture-overview.md
+      - Decisions:
+          - ADR-0001 - LangGraph: architecture/adr/0001-use-langgraph-for-agent-orchestration.md
+          - ADR-0002 - Modular Monolith: architecture/adr/0002-adopt-a-modular-monolith.md
+          - ADR-0003 - Tool Authorization: architecture/adr/0003-centralize-tool-authorization.md
+          - ADR-0004 - Model Providers: architecture/adr/0004-adopt-configurable-model-providers.md
+  - Security:
+      - Threat Model: security/threat-model.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format

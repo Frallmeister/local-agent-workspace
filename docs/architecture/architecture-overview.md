@@ -52,21 +52,21 @@ This diagram identifies dependencies, not mandatory process or container boundar
 
 ```mermaid
 flowchart TB
-    UI[React / TypeScript UI] <--> API[FastAPI interface]
-    API --> APP[Application services: runs, approvals, sessions]
-    APP --> ORCH[Agent orchestration: LangGraph (ADR-0001)]
-    ORCH --> MODEL[Model-provider boundary]
-    ORCH --> GW[Tool gateway]
-    GW --> POLICY[Policy and approval enforcement]
-    POLICY --> FILE[Filesystem / document adapters]
-    POLICY --> SQL[Read-only SQL adapter]
-    POLICY --> MCP[MCP client adapter]
-    FILE --> INDEX[Retrieval / indexing]
-    APP --> PERSIST[(Persistence: state, approvals, traces)]
-    INDEX --> PG[(PostgreSQL + pgvector candidate)]
+    UI["React and TypeScript UI"] <--> API["FastAPI interface"]
+    API --> APP["Application services: runs, approvals, sessions"]
+    APP --> ORCH["Agent orchestration: LangGraph (ADR-0001)"]
+    ORCH --> MODEL["Model provider boundary"]
+    ORCH --> GW["Tool gateway"]
+    GW --> POLICY["Policy and approval enforcement"]
+    POLICY --> FILE["Filesystem and document adapters"]
+    POLICY --> SQL["Read-only SQL adapter"]
+    POLICY --> MCP["MCP client adapter"]
+    FILE --> INDEX["Retrieval and indexing"]
+    APP --> PERSIST["Persistence: state, approvals, traces"]
+    INDEX --> PG["PostgreSQL and pgvector (candidate)"]
     SQL --> PG
-    MODEL --> OLLAMA[Ollama]
-    MODEL -. optional .-> EXTERNAL[External LLM provider]
+    MODEL --> OLLAMA["Ollama"]
+    MODEL -.->|optional| EXTERNAL["External LLM provider"]
 ```
 
 The diagram illustrates responsibilities, not an exact request call stack. The tool gateway must authorize each tool invocation **before** it reaches the implementation; approval decisions must be bound to the operation ultimately executed. A direct call to a tool adapter must not bypass enforcement. Read-only tools still require scope and capability checks.
@@ -107,24 +107,24 @@ sequenceDiagram
     actor User
     participant UI as Web UI
     participant API as Application API
-    participant O as Orchestrator
-    participant G as Tool gateway / policy
-    participant F as File adapter
+    participant Orch as Orchestrator
+    participant Gateway as Tool gateway and policy
+    participant Files as File adapter
     User->>UI: Request file change
     UI->>API: Submit request
-    API->>O: Start run
-    O->>G: Propose typed file operation
-    G->>G: Validate authorization and capture operation identity
-    G-->>API: Pending approval (no write)
-    API-->>UI: Display precise proposed change
+    API->>Orch: Start run
+    Orch->>Gateway: Propose typed file operation
+    Gateway->>Gateway: Validate authorization and record operation identity
+    Gateway-->>API: Pending approval - no write
+    API-->>UI: Display proposed change
     User->>UI: Approve or reject
-    UI->>API: Decision for operation identity
-    API->>G: Verify decision and operation
+    UI->>API: Submit decision for operation identity
+    API->>Gateway: Verify decision and operation
     alt Approved and still valid
-       G->>F: Execute exactly authorized operation
-       F-->>API: Result / audit event
-    else Rejected, expired, or changed
-       G-->>API: Denied; no mutation
+        Gateway->>Files: Execute authorized operation
+        Files-->>API: Result and audit event
+    else Rejected or no longer valid
+        Gateway-->>API: Denied - no mutation
     end
     API-->>UI: Final status
 ```
