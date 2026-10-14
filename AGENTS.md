@@ -33,6 +33,15 @@ Treat accepted requirements and ADRs as the design baseline. If documents appear
 - Documentation: Markdown and MkDocs Material; verify with `uv run mkdocs build --strict` after syncing the appropriate dependencies.
 - Introduce directories and dependencies when a real feature requires them. Do not create unused scaffolding.
 
+## Current development commands
+
+- From the repository root, install Python development and documentation dependencies with `uv sync --locked --group docs`.
+- Backend checks: `uv run --no-sync pytest tests/backend`, `uv run --no-sync ruff check .`, and `uv run --no-sync ruff format --check .`.
+- Documentation check: `uv run --no-sync mkdocs build --strict`.
+- From `frontend/`, install Node.js 24.x dependencies with `npm ci`; run `npm run typecheck`, `npm run lint`, `npm run build`, `npm run test:api`, and `npm test`. Use `npm.cmd` on Windows if PowerShell blocks the npm script.
+- Use npm and `frontend/package-lock.json` for frontend dependencies; retain uv and the root lockfile for Python.
+- See README for the two-terminal loopback startup procedure. Tests require no running backend, model, database, or credentials.
+
 ## Architecture and dependency boundaries
 
 - Keep a **modular monolith**, not microservices. Organize packages by clear responsibility.
