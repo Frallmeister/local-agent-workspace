@@ -82,7 +82,9 @@ The API tests use Node's built-in test runner with mocked fetch responses to che
 
 The **Frontend tests** GitHub Actions job runs type checking, ESLint, the build, API tests, and component tests on pull requests to `main`, pushes to `main`, and manual dispatch. After its first successful run, select **Frontend tests** as a required status check in the branch ruleset. The workflow has no path filters, so it reports a result for every pull request to `main`.
 
-M1-02 ([issue #6](https://github.com/Frallmeister/local-agent-workspace/issues/6)) covers FR-001 (interface foundation), NFR-002, NFR-003, and SEC-008, under ADR-0002 and threats T-07/T-11. M1-03 ([issue #7](https://github.com/Frallmeister/local-agent-workspace/issues/7)) adds frontend quality checks for NFR-002, NFR-005, and initial NFR-009 groundwork; these tests do not replace a full cross-language API contract check. Complete M1 setup verification remains planned in M1-04. No secrets or configuration template are needed for this health-only integration.
+M1-02 ([issue #6](https://github.com/Frallmeister/local-agent-workspace/issues/6)) covers FR-001 (interface foundation), NFR-002, NFR-003, and SEC-008, under ADR-0002 and threats T-07/T-11. M1-03 ([issue #7](https://github.com/Frallmeister/local-agent-workspace/issues/7)) adds frontend quality checks for NFR-002, NFR-005, and initial NFR-009 groundwork; these tests do not replace a full cross-language API contract check. See the [M1 verification record](docs/project/m1-verification.md) for M1-04 evidence and remaining limitations.
+
+No application environment settings or credentials are currently required. The used development settings are the backend CLI host/port and `frontend/vite.config.ts`; no `.env.example` is needed until runtime settings are introduced. Never put secrets in frontend code or Vite-exposed environment variables. Local `.env` and `.env.*` files are ignored; a future `.env.example` may contain safe placeholders only.
 
 ### Work with the documentation
 

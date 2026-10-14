@@ -17,6 +17,7 @@ nav:
       - Product Requirements: requirements/product-requirements.md
       - Software Requirements: requirements/software-requirements.md
       - Development Roadmap: project/development-roadmap.md
+      - M1 Verification: project/m1-verification.md
   - Architecture:
       - Overview: architecture/architecture-overview.md
       - Decisions:
