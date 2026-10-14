@@ -2,7 +2,7 @@
 
 Local Agent Workspace is an open-source, self-hosted AI assistant designed to work with local language models, authorized documents, structured data, and extensible tools. The project prioritizes local control, explicit permissions, observability, and verifiable behavior.
 
-> **Project status:** Early development. The requirements, architecture decisions, threat model, and development roadmap are documented, but the assistant application is not yet available to run. The instructions below are for working with the **documentation**, not for launching an AI assistant.
+> **Project status:** Early development. A minimal FastAPI backend provides a health endpoint and OpenAPI schema. The assistant, frontend, models, tools, and persistence are not yet implemented.
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ Local Agent Workspace is an open-source, self-hosted AI assistant designed to wo
 
 On Windows, run the commands below from PowerShell. On macOS or Linux, use your preferred terminal.
 
-## Get started with the documentation
+## Get started
 
 Clone the repository and enter the project directory:
 
@@ -21,19 +21,43 @@ git clone https://github.com/Frallmeister/local-agent-workspace.git
 cd local-agent-workspace
 ```
 
-Install the documentation dependencies into a project-managed virtual environment:
+Install the backend, development tools, and documentation dependencies:
 
 ```shell
-uv sync --locked --only-group docs
+uv sync --locked --group docs
 ```
 
-Start the live documentation server:
+### Run and test the backend
+
+Start the backend on loopback:
 
 ```shell
-uv run --no-sync mkdocs serve
+uv run --no-sync uvicorn local_agent_workspace.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Open **http://127.0.0.1:8000/** in your browser. Changes to Markdown files are reflected automatically while the server is running. Stop the server with `Ctrl+C`.
+Open **http://127.0.0.1:8000/api/health** to receive HTTP 200 with `{"status":"ok"}`. This is a liveness check, not a readiness check for models or databases. The contract is declared with a Pydantic response model and published at **http://127.0.0.1:8000/openapi.json**; interactive API documentation is at `/docs`.
+
+Run the deterministic backend checks:
+
+```shell
+uv run --no-sync pytest tests/backend
+uv run --no-sync ruff check .
+uv run --no-sync ruff format --check .
+```
+
+Tests use an in-process client and require no model, database, credentials, or running server. The installed package uses `src/local_agent_workspace/`; `main.py` assembles the API and `api/routes/health.py` owns the health contract. Future application logic should remain independent of HTTP routing (ADR-0002).
+
+Authentication and authorization are not implemented in this foundation. Loopback binding is a development default, not an authorization control; sensitive APIs require the protections described in the threat model before introduction. This increment covers M1-01 ([issue #4](https://github.com/Frallmeister/local-agent-workspace/issues/4)): FR-001 (backend foundation only), NFR-002, NFR-003, NFR-005, and SEC-008.
+
+### Work with the documentation
+
+Start the live documentation server on a separate port:
+
+```shell
+uv run --no-sync mkdocs serve --dev-addr 127.0.0.1:8001
+```
+
+Open **http://127.0.0.1:8001/** in your browser. Changes to Markdown files are reflected automatically while the server is running. Stop either server with `Ctrl+C`.
 
 To build and validate the documentation:
 
@@ -62,7 +86,7 @@ Development is organized around small GitHub issues, feature branches, and pull 
 
 For documentation-only changes, run `uv run --no-sync mkdocs build --strict` after synchronizing dependencies, and visually inspect changed Mermaid diagrams in `mkdocs serve` (a successful build does not guarantee browser-side Mermaid rendering).
 
-Application setup, backend/frontend development commands, and runnable examples will be added when the corresponding capabilities are implemented. Do not treat proposed architectural components as working features.
+Frontend setup and assistant examples will be added when those capabilities are implemented. Do not treat proposed architectural components as working features.
 
 ## License
 

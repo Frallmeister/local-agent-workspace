@@ -161,7 +161,7 @@ The architecture distinguishes:
 | Backend → external provider (optional) | Disclosure of prompts, documents, or results | Explicit opt-in; explain and control data egress; no implicit fallback |
 | Telemetry / persistent state | Sensitive content in logs or stored context | Redact or omit by default; restrictive access and retention decisions |
 
-A dedicated threat model will analyze attack paths, severity, mitigations, and residual risk. Security tests shall validate enforcement independently of the model's instructions.
+The accepted [initial threat model](../security/threat-model.md) records threat scenarios, mitigation directions, and residual design questions. Security tests shall validate enforcement independently of the model's instructions.
 
 ## 7. Deployment and development view
 
@@ -187,7 +187,7 @@ The following **implementation/design questions remain open**:
 
 | Topic | Current direction / next step |
 | --- | --- |
-| Storage and retrieval | PostgreSQL is required for structured data; pgvector is a candidate for retrieval. Confirm persistence and indexing details when implementing M3. |
+| Storage and retrieval | PostgreSQL is required for structured data. The roadmap plans pgvector for M3; the diagram retains its candidate status because the detailed persistence/indexing decision remains open. Confirm that design before implementing M3. |
 | MCP transport and isolation | Define server trust configuration, transport and process restrictions before implementing M6. |
 | Writable formats | The accepted [roadmap](../project/development-roadmap.md) limits v1.0 writes to UTF-8 text, including Markdown and JSON as text; file-operation semantics require a detailed design. |
 | MVP release boundary | The accepted [roadmap](../project/development-roadmap.md) establishes a read-only single-agent MVP after M2. |
@@ -206,12 +206,12 @@ Architecture reviews and tests should establish at minimum:
 5. Retrieval evaluations can attribute failures to document access, indexing/retrieval, or response generation (FR-006; NFR-006).
 6. Logs and traces avoid secrets and sensitive documents by default (SEC-011).
 
-Test IDs, evaluation fixtures, quality thresholds and release gates will be defined in the evaluation strategy and development roadmap.
+The accepted development roadmap defines milestone acceptance and release gates. Detailed test IDs, evaluation fixtures, and quality thresholds remain to be defined alongside implementation and evaluation artifacts.
 
 ## 10. Related artifacts
 
 - [Product Requirements Document](../requirements/product-requirements.md)
 - [Software Requirements Specification](../requirements/software-requirements.md)
-- Architecture Decision Records (to be drafted and accepted separately)
-- Threat model and security policy (planned)
-- Evaluation strategy and development roadmap (planned)
+- [Accepted architecture decisions](adr/0001-use-langgraph-for-agent-orchestration.md) (ADR-0001–0004)
+- [Initial threat model](../security/threat-model.md); security policy (planned)
+- [Development roadmap](../project/development-roadmap.md); evaluation strategy (planned)
