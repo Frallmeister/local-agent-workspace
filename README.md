@@ -75,7 +75,9 @@ npm run test:api
 
 The build performs TypeScript checking and writes the bundle to ignored `frontend/dist/`. The API tests use Node's built-in test runner with mocked fetch responses to check validation, HTTP/network failures, timeout, and cancellation without a backend. Production serving and proxy configuration are outside M1-02; the development proxy is not included in the bundle. Commit `frontend/package-lock.json` when dependencies change and use `npm ci` for reproducible installation.
 
-M1-02 ([issue #6](https://github.com/Frallmeister/local-agent-workspace/issues/6)) covers FR-001 (interface foundation), NFR-002, NFR-003, and SEC-008, under ADR-0002 and threats T-07/T-11. Frontend component tests, ESLint, and CI are planned in M1-03; complete M1 setup verification is planned in M1-04. No secrets or configuration template are needed for this health-only integration.
+The **Frontend tests** GitHub Actions job runs these API tests on pull requests to `main`, pushes to `main`, and manual dispatch. After its first successful run, select **Frontend tests** as a required status check in the branch ruleset. The workflow has no path filters, so it reports a result for every pull request to `main`.
+
+M1-02 ([issue #6](https://github.com/Frallmeister/local-agent-workspace/issues/6)) covers FR-001 (interface foundation), NFR-002, NFR-003, and SEC-008, under ADR-0002 and threats T-07/T-11. Frontend component tests, ESLint, and broader CI checks are planned in M1-03; complete M1 setup verification is planned in M1-04. No secrets or configuration template are needed for this health-only integration.
 
 ### Work with the documentation
 
