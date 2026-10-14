@@ -90,18 +90,18 @@ Detailed acceptance thresholds and test-case IDs will be tracked alongside imple
 
 These are **not yet accepted decisions** and should be resolved in architecture, security design, or roadmap before affected features are implemented:
 
-1. **Supported write formats:** Which file formats agents may create and modify in the first release (e.g., UTF-8 text rather than arbitrary binary files).
-2. **Release boundaries:** Which Must requirements belong in the first minimal usable increment (MVP) versus the broader initial release.
-3. **Agent architecture:** How multi-agent coordination is implemented, and what evidence justifies additional agents.
-4. **Approval mechanics:** How proposed writes are identified, revalidated, recovered, and audited.
-5. **MCP trust boundaries:** Which servers and capabilities may be enabled and how trust is established.
+1. **Agent coordination details:** How specialized LangGraph flows are implemented, and what measured evidence justifies additional agents; the framework and boundaries are accepted in ADR-0001–0003.
+2. **Approval mechanics:** How proposed writes are identified, revalidated, recovered, and audited.
+3. **MCP trust boundaries:** Which servers and capabilities may be enabled and how trust is established.
+
+The accepted [development roadmap](../project/development-roadmap.md) defines a read-only MVP after M2 and the broader initial release after M7. It limits v1.0 file writes to UTF-8 text, including Markdown and JSON as text. These are accepted scope decisions, not implemented capabilities.
 
 These decisions must preserve the PRD's security and user-control principles.
 
 ## 7. Related artifacts
 
 - [Product Requirements Document](product-requirements.md)
-- Architecture overview and ADRs (planned)
-- Threat model and security policy (planned)
+- [Architecture overview](../architecture/architecture-overview.md) and [accepted ADRs](../architecture/adr/0001-use-langgraph-for-agent-orchestration.md)
+- [Initial threat model](../security/threat-model.md); security policy (planned)
 - Evaluation strategy (planned)
-- Development roadmap (planned)
+- [Development roadmap](../project/development-roadmap.md)

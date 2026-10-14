@@ -3,7 +3,7 @@
 **Product:** Local Agent Workspace  
 **Status:** Accepted — initial development roadmap  
 **Scope:** Incremental implementation following the initial product definition (M0)  
-**Sources:** [PRD](../requirements/product-requirements.md), [SRS](../requirements/software-requirements.md), [Architecture Overview](../architecture/architecture-overview.md), [Threat Model](../security/threat-model.md), and accepted [ADRs](../architecture/adr/)
+**Sources:** [PRD](../requirements/product-requirements.md), [SRS](../requirements/software-requirements.md), [Architecture Overview](../architecture/architecture-overview.md), [Threat Model](../security/threat-model.md), and accepted [ADRs](../architecture/adr/0001-use-langgraph-for-agent-orchestration.md)
 
 ## 1. Purpose and delivery principles
 
@@ -122,7 +122,9 @@ Before implementing the affected features, settle the exact local API protection
 
 Cloud platforms, Terraform, Kubernetes, unrestricted shell execution, scheduled background automation, and cloud document storage integrations remain outside the initial release. No architecture decision requires those capabilities.
 
-## 7. M0 completion checklist
+## 7. Historical M0 completion checklist
+
+The checklist below preserves the original M0 review tasks; unchecked entries are not current milestone status. The documentation baseline was merged in PR #1, documentation tooling in PR #2, and agent instructions in PR #3. Current delivery evidence is tracked through GitHub issues and PRs.
 
 - [ ] PRD, SRS, architecture overview, four ADRs and threat model are present and mutually consistent.
 - [ ] This roadmap has been reviewed and accepted.
