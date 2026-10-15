@@ -2,7 +2,7 @@
 
 Local Agent Workspace is an open-source, self-hosted AI assistant designed to work with local language models, authorized documents, structured data, and extensible tools. The project prioritizes local control, explicit permissions, observability, and verifiable behavior.
 
-> **Project status:** Early development. A minimal FastAPI backend provides a health endpoint and OpenAPI schema. A React frontend displays its health status. The assistant, models, tools, and persistence are not yet implemented.
+> **Project status:** Early development. A minimal FastAPI backend provides a health endpoint and OpenAPI schema. A React frontend displays its health status. A model-provider boundary and deterministic scripted model are available for developer tests. Live inference, the assistant, tools, and persistence are not yet implemented.
 
 ## Prerequisites
 
@@ -107,6 +107,12 @@ The generated website is written to `site/`. **Use `mkdocs serve` to browse it l
 `uv sync --locked` uses the committed `uv.lock` file; contributors should commit lockfile updates when dependency definitions change. uv manages `.venv` automatically, so manually activating a virtual environment is unnecessary.
 
 ## Documentation map
+
+The [model-provider guide](docs/architecture/model-provider.md) documents M2-01
+([issue #12](https://github.com/Frallmeister/local-agent-workspace/issues/12)),
+including the framework interface assessment, explicit configuration, capability
+checks, scripted responses and normalized errors. It requires no runtime service
+or credentials and adds no assistant API endpoint.
 
 The documentation covers:
 
