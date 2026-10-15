@@ -20,6 +20,7 @@ nav:
       - M1 Verification: project/m1-verification.md
   - Architecture:
       - Overview: architecture/architecture-overview.md
+      - Model Provider: architecture/model-provider.md
       - Decisions:
           - ADR-0001 - LangGraph: architecture/adr/0001-use-langgraph-for-agent-orchestration.md
           - ADR-0002 - Modular Monolith: architecture/adr/0002-adopt-a-modular-monolith.md
